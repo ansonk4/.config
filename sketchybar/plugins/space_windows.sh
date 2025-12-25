@@ -20,12 +20,16 @@ displayMap=$(swift -e '
       print(jsonString)
   }')
 
-
-
-AEROSPACE_FOCUSED_MONITOR=$(aerospace list-monitors --focused | awk '{print $1}')
-AEROSPACE_FOCUSED_MONITOR=$(echo $displayMap | jq --arg nsscreen "$AEROSPACE_FOCUSED_MONITOR" -r '.[$nsscreen]')
 AEROSAPCE_WORKSPACE_FOCUSED_MONITOR=$(aerospace list-workspaces --monitor focused --empty no)
 AEROSPACE_EMPTY_WORKESPACE=$(aerospace list-workspaces --monitor focused --empty)
+DISPLAY_COUNT=$(aerospace list-monitors | wc -l | xargs)
+
+if [ $DISPLAY_COUNT == 1 ]; then
+  AEROSPACE_FOCUSED_MONITOR=1
+else
+  AEROSPACE_FOCUSED_MONITOR=$(aerospace list-monitors --focused | awk '{print $1}')
+  AEROSPACE_FOCUSED_MONITOR=$(echo $displayMap | jq --arg nsscreen "$AEROSPACE_FOCUSED_MONITOR" -r '.[$nsscreen]')
+fi
 
 reload_workspace_icon() {
   apps=$(aerospace list-windows --workspace "$@" | awk -F'|' '{gsub(/^ *| *$/, "", $2); print $2}')

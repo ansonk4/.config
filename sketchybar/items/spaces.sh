@@ -25,6 +25,16 @@ displayMap=$(swift -e '
       print(jsonString)
   }')
 
+
+DISPLAY_COUNT=$(aerospace list-monitors | wc -l | xargs)
+
+if [ $DISPLAY_COUNT == 1 ]; then
+  AEROSPACE_FOCUSED_MONITOR=1
+else
+  AEROSPACE_FOCUSED_MONITOR=$(aerospace list-monitors --focused | awk '{print $1}')
+  AEROSPACE_FOCUSED_MONITOR=$(echo $displayMap | jq --arg nsscreen "$AEROSPACE_FOCUSED_MONITOR" -r '.[$nsscreen]')
+fi
+
 for m in $(aerospace list-monitors | awk '{print $1}'); do
   displayId=$(echo $displayMap | jq --arg nsscreen "$m" -r '.[$nsscreen]')
   for i in $(aerospace list-workspaces --monitor $m); do
