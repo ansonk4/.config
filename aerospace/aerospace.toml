@@ -66,7 +66,7 @@ on-focus-changed = ['move-mouse window-lazy-center']
         # Minimal gap on internal display
         { monitor."^built-in retina display$" = 10 },
         # Larger gap on all other displays
-        40,
+        32,
     ]
     outer.right =      10
 
