@@ -1,9 +1,16 @@
-"use strict";var i=Object.defineProperty;var p=Object.getOwnPropertyDescriptor;var l=Object.getOwnPropertyNames;var u=Object.prototype.hasOwnProperty;var w=(n,t)=>{for(var r in t)i(n,r,{get:t[r],enumerable:!0})},m=(n,t,r,s)=>{if(t&&typeof t=="object"||typeof t=="function")for(let o of l(t))!u.call(n,o)&&o!==r&&i(n,o,{get:()=>t[o],enumerable:!(s=p(t,o))||s.enumerable});return n};var f=n=>m(i({},"__esModule",{value:!0}),n);var L={};w(L,{default:()=>d});module.exports=f(L);var e=require("@raycast/api");var a=require("node:child_process");async function c(n){if(process.platform!=="darwin")throw new Error("macOS only");let t=process.env.LC_ALL;delete process.env.LC_ALL;let{stdout:r}=(0,a.spawnSync)("osascript",["-e",n]);return process.env.LC_ALL=t,r.toString()}var d=async()=>{let n=`
+"use strict";var k=Object.create;var l=Object.defineProperty;var x=Object.getOwnPropertyDescriptor;var v=Object.getOwnPropertyNames;var S=Object.getPrototypeOf,E=Object.prototype.hasOwnProperty;var A=(e,t)=>{for(var n in t)l(e,n,{get:t[n],enumerable:!0})},b=(e,t,n,s)=>{if(t&&typeof t=="object"||typeof t=="function")for(let i of v(t))!E.call(e,i)&&i!==n&&l(e,i,{get:()=>t[i],enumerable:!(s=x(t,i))||s.enumerable});return e};var h=(e,t,n)=>(n=e!=null?k(S(e)):{},b(t||!e||!e.__esModule?l(n,"default",{value:e,enumerable:!0}):n,e)),T=e=>b(l({},"__esModule",{value:!0}),e);var R={};A(R,{default:()=>_});module.exports=T(R);var d=require("@raycast/api");var u=require("@raycast/api");var o=h(require("react")),r=require("@raycast/api");var c=h(require("node:fs")),f=h(require("node:path"));var y=require("react/jsx-runtime");function p(e,t){let n=e instanceof Error?e.message:String(e);return(0,r.showToast)({style:r.Toast.Style.Failure,title:t?.title??"Something went wrong",message:t?.message??n,primaryAction:t?.primaryAction??g(e),secondaryAction:t?.primaryAction?g(e):void 0})}var g=e=>{let t=!0,n="[Extension Name]...",s="";try{let a=JSON.parse((0,c.readFileSync)((0,f.join)(r.environment.assetsPath,"..","package.json"),"utf8"));n=`[${a.title}]...`,s=`https://raycast.com/${a.owner||a.author}/${a.name}`,(!a.owner||a.access==="public")&&(t=!1)}catch{}let i=r.environment.isDevelopment||t,m=e instanceof Error?e?.stack||e?.message||"":String(e);return{title:i?"Copy Logs":"Report Error",onAction(a){a.hide(),i?r.Clipboard.copy(m):(0,r.open)(`https://github.com/raycast/extensions/issues/new?&labels=extension%2Cbug&template=extension_bug_report.yml&title=${encodeURIComponent(n)}&extension-url=${encodeURI(s)}&description=${encodeURIComponent(`#### Error:
+\`\`\`
+${m}
+\`\`\`
+`)}`)}}};var $=require("node:child_process");async function w(e){if(process.platform!=="darwin")throw new Error("macOS only");let t=process.env.LC_ALL;delete process.env.LC_ALL;let{stdout:n,stderr:s}=(0,$.spawnSync)("osascript",["-e",e]);if(process.env.LC_ALL=t,s?.length)throw new Error(s.toString());return n.toString()}var _=async()=>{let e=`
       if application "Terminal" is not running then
           return "Not running"
       end if
   
       tell application "Terminal"
+      if (count of windows) is 0 then
+          error "No Terminal window open"
+      end if
       do script "open -a Finder ./" in first window
       end tell
-  `;try{let t=await c(n);await(0,e.showToast)(e.Toast.Style.Success,"Done",t)}catch{await(0,e.showToast)(e.Toast.Style.Failure,"Something went wrong")}};
+  `;try{let t=await w(e);await(0,d.showToast)(d.Toast.Style.Success,"Done",t)}catch(t){await p(t)}};
